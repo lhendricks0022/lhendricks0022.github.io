@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html><head>  <meta charset="UTF-8">
+    <title>Program 5 - Lisa Hendricks</title>
+</head>
+<body style='margin-left: 30px;'>
+
+    <h1>Select a Major</h1>
+        
+    <input type="button" id='citbtn' value="CIT Majors">
+    <input type="button" id='busbtn' value="Business Majors">
+
+	<h3>We filter our dataset by major</h3>
+             
+ 	<div id="result"></div>
+    
+<script>
+   
+    document.addEventListener('DOMContentLoaded', function() {    
+									
+		// CIT BUTTON 
+    	document.querySelector('#citbtn').onclick = async function(){   
+			var response = await fetch('cit5students.json');       // ajax GET request
+
+			if(response.ok) {
+				var data = await response.json();                // array of objects
+
+				var cit_students = JSON.parse(cit5students.json).filter(function (entry) {
+    			return entry.major === 'CIT';
+				});
+
+				var tableContents = "<table cellspacing='5'>"
+				tableContents += "<tr><td>Name</td><td>Major</td><td>Midterm</td><td>Final</td></tr>";
+
+            	for(entry = 0; entry < data.length; entry++) {
+                    tableContents += 
+						`<tr><td> ${data[entry].name} </td>
+						<td> ${data[entry].major} </td>
+						<td> ${data[entry].midterm} </td>
+						<td> ${data[entry].final} </td></tr>`;  // generate table using template literals
+                }
+				
+
+                tableContents += "</table>";
+
+                document.querySelector('#result').innerHTML = tableContents;
+			}
+			else {
+				document.querySelector('#result').innerHTML = "Data not found";
+			}	
+    	};
+	
+  	});
+   
+</script>
+   
+</body>
+</html>
